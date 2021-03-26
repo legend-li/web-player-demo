@@ -1,0 +1,15 @@
+{
+  "name": "web-player-demo",
+  "version": "1.0.0",
+  "description": "一套简单的基于HLS流媒体协议，使用video.js + NodeJS + FFmpeg等相关技术实现的m3u8+ts+aes128视频加密及播放的解决方案示例。",
+  "main": "example/index.html",
+  "directories": {
+    "doc": "docs",
+    "example": "example"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
