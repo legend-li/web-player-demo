@@ -14,14 +14,16 @@
 
 
   <video id="player" class="video-js vjs-big-play-centered" width=600 height=300 controls preload="auto">
-    <source src="http://127.0.0.1:8080/videos/testHLSEncode.m3u8" type="application/x-mpegURL" />
+    <!-- <source src="http://127.0.0.1:8080/videos/testHLSEncode.m3u8" type="application/x-mpegURL" /> -->
+    <source src="http://video-test.yangcong345.com/hls/high/high_654f8654-4260-4391-bda6-504500567a77.m3u8" type="application/x-mpegURL" />
   </video>
 
   <button class="play-btn">播放</button>
   <button class="pause-btn">暂停</button>
 
   <script src="//unpkg.com/video.js@7.1.0/dist/video.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/js-base64@3.6.0/base64.min.js"></script>
+  <script src="./spark-md5.min.js"></script>
   <script>
     var optionsInit = {autoplay: true}
     var player = videojs("player", optionsInit)
@@ -37,21 +39,37 @@
       document.addEventListener('touchend', setAutoPlay);
     }
 
+    const genQueryFromObj = (obj) => {
+      let arr = []
+      for (let key in obj) {
+        arr.push(`${key}=${obj[key]}`)
+      }
+      return arr.join('&')
+    }
+
     var keyEndfix = ".key"
     player.on("loadstart", function (e) {
         player.tech().hls.xhr.beforeRequest = function(options) {
-          console.log('options:', options)
+          // console.log('options:', options)
             // required for detecting only the key requests
-            if (!options.uri.endsWith(keyEndfix)) return
-            // options.headers = options.headers || {};
-            // options.headers["Range"] = "items=0-10";
-            options.uri = options.uri+'?token=lz'
+            // if (!options.uri.endsWith(keyEndfix)) return
+            if (options.uri.indexOf('/video/encrypt/') === -1) return
+            options.headers = options.headers || {};
+            let query = genQueryFromObj({
+              v: "1", // 客户端当前版本key的版本
+              sMethod: "md5", // 仅支持md5
+              vId: "xxx",//"视频ID",
+              timestamp:  new Date().toISOString(),
+            })
+            query = query + `&signature=${SparkMD5.hash(query+'ycmath')}`
+            let XKEY = Base64.encode(query)
+            options.headers["x-key"] = XKEY
+            // options.uri = options.uri+'?token=lz'
         }
         if (optionsInit.autoplay === true) {
           canPlay()
         }
     })
-    console.log('player:', player)
 
     document.querySelector('.play-btn').addEventListener('click', () => {
       console.log('播放')
