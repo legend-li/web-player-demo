@@ -14,8 +14,8 @@
 
 
   <video id="player" class="video-js vjs-big-play-centered" width=600 height=300 controls preload="auto">
-    <!-- <source src="http://127.0.0.1:8080/videos/testHLSEncode.m3u8" type="application/x-mpegURL" /> -->
-    <source src="http://video-test.yangcong345.com/hls/high/high_654f8654-4260-4391-bda6-504500567a77.m3u8" type="application/x-mpegURL" />
+    <source src="http://127.0.0.1:8080/videos/testHLSEncode.m3u8" type="application/x-mpegURL" />
+    <!-- <source src="http://video-test.yangcong345.com/hls/high/high_654f8654-4260-4391-bda6-504500567a77.m3u8" type="application/x-mpegURL" /> -->
   </video>
 
   <button class="play-btn">播放</button>
@@ -53,7 +53,7 @@
           // console.log('options:', options)
             // required for detecting only the key requests
             // if (!options.uri.endsWith(keyEndfix)) return
-            if (options.uri.indexOf('/video/encrypt/') === -1) return
+            // if (options.uri.indexOf('/video/encrypt/') === -1) return
             options.headers = options.headers || {};
             let query = genQueryFromObj({
               v: "1", // 客户端当前版本key的版本
