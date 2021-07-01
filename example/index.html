@@ -21,12 +21,21 @@
   <button class="play-btn">播放</button>
   <button class="pause-btn">暂停</button>
 
+  <div id="player-container"></div>
+
   <script src="//unpkg.com/video.js@7.1.0/dist/video.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/js-base64@3.6.0/base64.min.js"></script>
   <script src="./spark-md5.min.js"></script>
   <script>
-    var optionsInit = {autoplay: true}
+    var optionsInit = {
+      autoplay: false,
+      playbackRates: [0.5, 1, 2]
+    }
     var player = videojs("player", optionsInit)
+    player.currentTime(9)
+    player.ready(() => {
+      console.log('ready init~')
+    })
 
     function canPlay() {
       function setAutoPlay () {
@@ -49,6 +58,7 @@
 
     var keyEndfix = ".key"
     player.on("loadstart", function (e) {
+      console.log('loadstart~')
         player.tech().hls.xhr.beforeRequest = function(options) {
           // console.log('options:', options)
             // required for detecting only the key requests
